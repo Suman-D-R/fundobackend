@@ -33,7 +33,7 @@ export const deleteUser = async (id) => {
 };
 
 //get single user
-export const getUser = async (id) => {
-  const data = await User.findById(id);
+export const getUser = async (email) => {
+  const data = await User.findOne(email);
   return data;
 };
