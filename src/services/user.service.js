@@ -6,10 +6,32 @@ export const getAllUsers = async () => {
   return data;
 };
 
+//login
+
+export const loginUser = async (userDetails) => {
+  const data = await User.findOne({email: userDetails.email } );
+  if (!data) {
+    throw new Error('User not found');
+  }
+
+  if (userDetails.email === data.email && userDetails.password !== data.password) {
+    throw new Error('Password not matched');
+  }
+
+  if (userDetails.email === data.email && userDetails.password === data.password) {
+    return data;
+  }
+  return null
+};
+
 //create new user
-export const newUser = async (body) => {
-  const data = await User.create(body);
-  return data;
+export const userRegistration = async (body) => {
+  const email = await User.findOne({email:body.email})
+  const data = await User.create(body)
+  if(email){
+    throw new Error('user alrady have an account');
+  }
+  return data
 };
 
 //update single user
@@ -34,6 +56,9 @@ export const deleteUser = async (id) => {
 
 //get single user
 export const getUser = async (email) => {
-  const data = await User.findOne(email);
+  const data = await User.findOne({email:email});
+  if(!data){
+    throw new Error('user not found')
+  }
   return data;
 };
