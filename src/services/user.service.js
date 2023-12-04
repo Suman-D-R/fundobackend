@@ -1,5 +1,7 @@
+import { date } from '@hapi/joi/lib/template';
 import User from '../models/user.model';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 
 //login
@@ -12,10 +14,13 @@ export const loginUser = async (userDetails) => {
 
   const passwordMatch = await bcrypt.compare(userDetails.password, user.password);
 
+
   if (!passwordMatch) {
     throw new Error('Password not matched');
   }
-  return user;
+  var token = jwt.sign({ _id:user._id ,email: user.email }, process.env.SECRET_KEY);
+
+  return token;
 };
 
 //create new user
@@ -26,7 +31,6 @@ export const userRegistration = async (body) => {
   }
   const hashedPassword = await bcrypt.hash(body.password, 10);
   body.password = hashedPassword;
-  console.log("body :>",body)
   const data = await User.create(body)
   return data
 };
