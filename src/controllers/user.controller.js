@@ -19,8 +19,8 @@ export const loginUser = async (req, res, next) => {
   try {
     const data = await UserService.loginUser(req.body);
   
-  if(data) { res.status(HttpStatus.CREATED).json({
-      code: HttpStatus.CREATED,
+  if(data) { res.status(HttpStatus.OK).json({
+      code: HttpStatus.Ok,
       data: data,
       message: 'User created successfully'
     });}
@@ -31,6 +31,8 @@ export const loginUser = async (req, res, next) => {
     });
   }
 };
+
+
 
 
 
