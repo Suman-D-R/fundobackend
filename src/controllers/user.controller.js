@@ -32,6 +32,41 @@ export const loginUser = async (req, res, next) => {
   }
 };
 
+export const forgetpassword = async (req, res, next) => {
+  try {
+    const data = await UserService.forgetpassword(req.body);
+  
+  if(data) { res.status(HttpStatus.OK).json({
+      code: HttpStatus.Ok,
+      data: data,
+      message: 'User token created successfully'
+    });}
+  } catch (error) {
+    res.status(HttpStatus.UNAUTHORIZED).json({
+      code: HttpStatus.UNAUTHORIZED,
+      message: error.message
+    });
+  }
+};
+
+export const resetPassword = async (req, res, next) => {
+  try {
+    // Call the service function
+    const data = await UserService.resetPassword(req.params.token, req.body.password);
+
+    // Handle the response
+    res.status(HttpStatus.OK).json({
+      code: HttpStatus.OK,
+      data: data,
+      message: 'User password changed successfully',
+    });
+  } catch (error) {
+    res.status(HttpStatus.UNAUTHORIZED).json({
+      code: HttpStatus.UNAUTHORIZED,
+      message: error.message,
+    });
+  }
+};
 
 
 

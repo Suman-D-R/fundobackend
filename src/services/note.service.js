@@ -1,69 +1,75 @@
 import Note from '../models/note.model';
 
-export const addNote = async (noteContent) => {
-  const data = await Note.create(noteContent);
+export const addNote = async (noteData,userId) => {
+  noteData.user_id = userId;
+  const data = await Note.create(noteData);
   return data;
 };
 
-export const getAllNotes = async () => {
+export const getAllNotes = async (userId) => {
     try {
-        const allNotes = await Note.find({});
-        return allNotes;
+      const data = await Note.find({ user_id: userId });
+      return data;
     } catch (error) {
         throw new Error('Error fetching all notes: ' + error.message);
     }
 };
 
-export const updateNote = async (noteContent) => {
+export const getNotes = async (noteId) => {
+  try {
+    const data = await Note.findById(noteId);
+    return data;
+  } catch (error) {
+      throw new Error('Error fetching all notes: ' + error.message);
+  }
+};
+
+export const updateNote = async (noteId, updatedData) => {
     try {
-      const data = await Note.findById(noteContent._id);
-      console.log(data);
-      if (!data) {
-        throw new Error('Note note found');
-      }
-  
-      data.title = noteContent.title;
-      data.description = noteContent.description;
-  
-      const result = await data.save();
-  
-      return result;
+      const data = await Note.findByIdAndUpdate(noteId, updatedData, { new: true });
+      return data;
     } catch (error) {
       throw new Error('Error  updating note: ' + error.message);
     }
   };
 
-export const deleteNote = async (noteContent) => {
+export const deleteNote = async (noteId) => {
   try {
-    const data = await Note.findById(noteContent._id);
-    console.log(data);
-    if (!data) {
-      throw new Error('Note note found');
+    const currentNote = await Note.findById(noteId);
+
+    if (!currentNote) {
+      throw new Error('Note not found');
     }
 
-    data.isDeleted = !data.isDeleted;
+    const updatedData = await Note.findByIdAndUpdate(
+      noteId,
+      { isDeleted: !currentNote.isDeleted },
+      { new: true }
+    );
 
-    const result = await data.save();
+    return updatedData;
+    // return data;
 
-    return result;
   } catch (error) {
     throw new Error('Error  deleting note: ' + error.message);
   }
 };
 
-export const achiveNote = async (noteContent) => {
+export const achiveNote = async (noteId) => {
   try {
-    const data = await Note.findById(noteContent._id);
-    console.log(data);
-    if (!data) {
-      throw new Error('Note note found');
+    const currentNote = await Note.findById(noteId);
+
+    if (!currentNote) {
+      throw new Error('Note not found');
     }
 
-    data.isAchive = !data.isAchive;
+    const updatedData = await Note.findByIdAndUpdate(
+      noteId,
+      { isArchive: !currentNote.isArchive },
+      { new: true }
+    );
 
-    const result = await data.save();
-
-    return result;
+    return updatedData;
   } catch (error) {
     throw new Error('Error  achiving note: ' + error.message);
   }
@@ -71,17 +77,11 @@ export const achiveNote = async (noteContent) => {
 
 
 
-export const deleteforever = async (noteContent) => {
+export const deleteforever = async (noteId) => {
     try {
-      const data = await Note.findById(noteContent._id);
-      console.log(data);
-      if (!data) {
-        throw new Error('Note note found');
-      }
+      const data = await Note.findByIdAndDelete(noteId);
   
-      const result = await data.remove();
-  
-      return result;
+      return data;
     } catch (error) {
       throw new Error('Error  achiving note: ' + error.message);
     }
