@@ -10,8 +10,6 @@ import jwt from 'jsonwebtoken';
  * @param {Function} next
  */
 
-const SECRET_KEY = process.env.SECRET_KEY;
-
 export const userAuth = async (req, res, next) => {
   try {
     let bearerToken = req.header('Authorization');

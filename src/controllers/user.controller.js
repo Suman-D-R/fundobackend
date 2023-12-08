@@ -49,10 +49,10 @@ export const forgetpassword = async (req, res, next) => {
   }
 };
 
-export const resetPassword = async (req, res, next) => {
+export const resetPassword = async (req, res) => {
   try {
     // Call the service function
-    const data = await UserService.resetPassword(req.params.token, req.body.password);
+    const data = await UserService.resetPassword(req.body.password);
 
     // Handle the response
     res.status(HttpStatus.OK).json({

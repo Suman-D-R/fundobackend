@@ -5,8 +5,8 @@ export const addNote = async (req, res, next) => {
   try {
     console.log('addNote req body:>', req.body);
     const data = await noteService.addNote(req.body,req.body.user_id);
-    res.status(HttpStatus.ACCEPTED).json({
-      code: HttpStatus.ACCEPTED,
+    res.status(HttpStatus.OK).json({
+      code: HttpStatus.OK,
       data: data,
       message: 'note created'
     });
