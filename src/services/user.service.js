@@ -60,23 +60,17 @@ export const forgetpassword = async (body) => {
 };
 
 //reset password
-export const resetPassword = async (req, password) => {
+export const resetPassword = async (userDetails) => {
   try {
-    // Verify the token
-    let bearerToken = req.header('Authorization');
-    if (!bearerToken)
-      throw {
-        code: HttpStatus.BAD_REQUEST,
-        message: 'Authorization token is required'
-      };
-    const token = bearerToken.split(' ')[1];
-    const decodedToken = jwt.verify(token, process.env.SECRET_KEY_FORGET);
+    let {password}=userDetails;
+    let {_id} = userDetails;
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Find the user by ID
+    console.log(userDetails)
     const user = await User.findByIdAndUpdate(
-      decodedToken.userId,
+      _id,
       {
         password: hashedPassword
       },
