@@ -12,15 +12,20 @@ import jwt from 'jsonwebtoken';
 
 export const userAuth = async (req, res, next) => {
   try {
-    let bearerToken = req.header('Authorization');
-    if (!bearerToken)
+    let bearerTokenArray = req.header('Authorization');
+    if (!bearerTokenArray)
       throw {
         code: HttpStatus.BAD_REQUEST,
         message: 'Authorization token is required'
       };
-    bearerToken = bearerToken.split(' ')[1];
-    const  user  = await jwt.verify(bearerToken, process.env.SECRET_KEY); 
-    req.body.user_id = user._id;   
+
+    bearerTokenArray = bearerTokenArray.split(' ');
+    var bearerToken;
+    bearerTokenArray.length > 1
+      ? (bearerToken = bearerTokenArray[1])
+      : (bearerToken = bearerTokenArray[0]);
+    const user = await jwt.verify(bearerToken, process.env.SECRET_KEY);
+    req.body.user_id = user._id;
     next();
   } catch (error) {
     next(error);
@@ -38,7 +43,7 @@ export const userForgetAuth = async (req, res, next) => {
     const token = bearerToken.split(' ')[1];
     const user = jwt.verify(token, process.env.SECRET_KEY_FORGET);
     console.log(user);
-    req.body._id = user.userId;   
+    req.body._id = user.userId;
     next();
   } catch (error) {
     next(error);
