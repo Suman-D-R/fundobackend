@@ -6,7 +6,7 @@ import cacheMiddleware from '../middlewares/cache.middleware';
 const router = express.Router();
 
 //route to create a new note
-router.post('',userAuth ,cacheMiddleware, noteController.addNote);
+router.post('',userAuth , noteController.addNote);
 
 //route to getallnotes note
 router.get('',userAuth,cacheMiddleware,noteController.getAllNotes)
@@ -15,16 +15,16 @@ router.get('',userAuth,cacheMiddleware,noteController.getAllNotes)
 router.get('/:_id',userAuth, cacheMiddleware, noteController.getNotes)
 
 //route to update note
-router.put('/:_id',userAuth, cacheMiddleware, noteController.updateNote) 
+router.put('/:_id',userAuth, noteController.updateNote) 
 
 //route to deleteForEver a note
 router.delete('/:_id',userAuth, cacheMiddleware, noteController.deleteforever) 
 
 //route to delete a note
-router.put('/:_id/deleteNote', cacheMiddleware, userAuth,noteController.deleteNote);
+router.put('/:_id/deleteNote', userAuth,noteController.deleteNote);
 
 //route to achive a note
-router.put('/:_id/achiveNote', cacheMiddleware, userAuth,noteController.achiveNote);
+router.put('/:_id/achiveNote', userAuth,noteController.achiveNote);
 
 
 
