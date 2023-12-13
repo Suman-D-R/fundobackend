@@ -3,7 +3,6 @@ import * as noteService from '../services/note.service';
 
 export const addNote = async (req, res, next) => {
   try {
-    console.log('addNote req body:>', req.body);
     const data = await noteService.addNote(req.body,req.body.user_id);
     res.status(HttpStatus.OK).json({
       code: HttpStatus.OK,
@@ -25,7 +24,7 @@ export const getAllNotes = async (req,res,next)=>{
         res.status(HttpStatus.OK).json({
             code:HttpStatus.OK,
             data: data,
-            message:'updated'
+            message:'sucessfull'
         })
     }catch(error){
         res.status(HttpStatus.BAD_REQUEST).json({
@@ -37,7 +36,7 @@ export const getAllNotes = async (req,res,next)=>{
 
 export const getNotes = async (req,res,next)=>{
     try{
-        const data = await noteService.getNotes(req.params._id);
+        const data = await noteService.getNotes(req.params._id,req.body.user_id);
         res.status(HttpStatus.OK).json({
             code:HttpStatus.OK,
             data: data,
@@ -53,7 +52,7 @@ export const getNotes = async (req,res,next)=>{
 
 export const updateNote = async (req,res,next)=>{
     try{
-        const data = await noteService.updateNote(req.params._id,req.body);
+        const data = await noteService.updateNote(req.params._id,req.body,req.body.user_id);
         res.status(HttpStatus.OK).json({
             code:HttpStatus.OK,
             data: data,
@@ -70,7 +69,7 @@ export const updateNote = async (req,res,next)=>{
 
 export const deleteNote = async (req,res,next)=>{
     try{
-        const data = await noteService.deleteNote(req.params._id);
+        const data = await noteService.deleteNote(req.params._id,req.body.user_id);
         res.status(HttpStatus.OK).json({
             code:HttpStatus.OK,
             data: data,
@@ -87,7 +86,7 @@ export const deleteNote = async (req,res,next)=>{
 
 export const achiveNote = async (req,res,next)=>{
     try{
-        const data = await noteService.achiveNote(req.params._id);
+        const data = await noteService.achiveNote(req.params._id,req.body.user_id);
         res.status(HttpStatus.OK).json({
             code:HttpStatus.OK,
             data: data,
@@ -103,7 +102,7 @@ export const achiveNote = async (req,res,next)=>{
 
 export const deleteforever = async (req,res,next)=>{
     try{
-        const data = await noteService.deleteforever(req.params._id);
+        const data = await noteService.deleteforever(req.params._id,req.body.user_id);
         res.status(HttpStatus.OK).json({
             code:HttpStatus.OK,
             data: data,
