@@ -6,14 +6,16 @@ const cacheMiddleware = async (req, res, next) => {
 
   try {
     const cachedData = await client.get(uniqueKey);
-    console.log("cash data>>>>",cachedData);
     if (cachedData) {
-      console.log("Data retrieved from cache", cachedData);
-      return res.json(JSON.parse(cachedData));
+      return res.json({
+        code: HttpStatus.OK,
+        data: JSON.parse(cachedData),
+        message: 'Data retrieved from cache'
+      });
     }
     next();
   } catch (error) {
-    console.error("Error retrieving data from cache", error);
+    console.error('Error retrieving data from cache', error);
     next();
   }
 };

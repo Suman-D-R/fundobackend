@@ -13,9 +13,6 @@ export const getAllNotes = async (userId) => {
     const data = await Note.find({ user_id: userId });
 
     client.set(userId, JSON.stringify(data));
-
-    console.log('Data retrieved from the database');
-
     return data;
   } catch (error) {
     throw new Error('Error fetching all notes: ' + error.message);

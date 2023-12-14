@@ -24,7 +24,6 @@ export const getAllNotes = async (req,res,next)=>{
         res.status(HttpStatus.OK).json({
             code:HttpStatus.OK,
             data: data,
-            message:'sucessfull'
         })
     }catch(error){
         res.status(HttpStatus.BAD_REQUEST).json({
