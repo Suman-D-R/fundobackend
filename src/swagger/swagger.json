@@ -1,0 +1,344 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "V1",
+    "title": "Fundoo App",
+    "description": "CLI App API"
+  },
+  "host": "localhost:3000",
+  "basePath": "/api/v1/",
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "securityDefinitions": {
+    "BearerAuth": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "description": "Enter Bearer token"
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "tags": [
+    { "name": "User", "description": "User operations" },
+    { "name": "Notes", "description": "Note operations" }
+  ],
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Register user",
+        "parameters": [
+          {
+            "name": "userDetails",
+            "in": "body",
+            "description": "Create",
+            "schema": { "$ref": "#/definitions/User" }
+          },
+          {
+            "securityDefinitions": "fales"
+          }
+        ],
+        "responses": {
+          "201": { "description": "New user is created" },
+          "500": { "description": "Internal server error" }
+        },
+        "security": []
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Login user",
+        "parameters": [
+          {
+            "name": "loginUser",
+            "in": "body",
+            "description": "Login",
+            "schema": { "$ref": "#/definitions/login" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Login successful" },
+          "500": { "description": "Internal server error" }
+        },
+        "security": []
+      }
+    },
+    "/users/forgetpassword": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Login user",
+        "parameters": [
+          {
+            "name": "loginUser",
+            "in": "body",
+            "description": "Login",
+            "schema": {
+                "$ref": "#/definitions/forgetPassword"
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Login successful" },
+          "500": { "description": "Internal server error" }
+        },
+        "security": []
+      }
+    },
+    "/users/resetpassword": {
+        "post": {
+          "tags": ["User"],
+          "summary": "Reset password",
+          "parameters": [
+            {
+              "name": "loginUser",
+              "in": "header",
+              "description": "Login",
+              "schema": {
+                "$ref": "#/definitions/resetPassword"
+              }
+            },
+            {
+                "name": "loginUser",
+                "in": "body",
+                "description": "Login",
+                "schema": {
+                  "$ref": "#/definitions/resetPassword"
+                }
+              }
+          ],
+          "responses": {
+            "200": { "description": "Login successful" },
+            "500": { "description": "Internal server error" }
+          }
+        }
+      },
+      
+
+    "/notes": {
+      "post": {
+        "tags": ["Notes"],
+        "summary": "Create notes",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer Token",
+            "type": "apiKey"
+          },
+          {
+            "name": "createNote",
+            "in": "body",
+            "description": "Add note",
+            "schema": { "$ref": "#/definitions/createnote" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Note created successfully" },
+          "500": { "description": "Internal server error" }
+        }
+      },
+      "get": {
+        "tags": ["Notes"],
+        "summary": "Get notes",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer Token",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Notes retrieved successfully" },
+          "500": { "description": "Internal server error" }
+        }
+      }
+    },
+
+    "/notes/{_id}": {
+      "get": {
+        "tags": ["Notes"],
+        "summary": "Get a specific note",
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "description": "ID of the note",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Note retrieved successfully"
+          },
+          "401": {
+            "description": "Unauthorized - Bearer token not provided or invalid"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Notes"],
+        "summary": "update note",
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "description": "ID of the note",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userDetails",
+            "in": "body",
+            "description": "Create",
+            "schema": { "$ref": "#/definitions/User" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Note retrieved successfully"
+          },
+          "401": {
+            "description": "Unauthorized - Bearer token not provided or invalid"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Notes"],
+        "summary": "deleteforever note",
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "description": "ID of the note",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Note retrieved successfully"
+          },
+          "401": {
+            "description": "Unauthorized - Bearer token not provided or invalid"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/notes/{_id}/achiveNote": {
+      "put": {
+        "tags": ["Notes"],
+        "summary": "achive note",
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "description": "ID of the note",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Note retrieved successfully"
+          },
+          "401": {
+            "description": "Unauthorized - Bearer token not provided or invalid"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/notes/{_id}/deleteNote": {
+      "put": {
+        "tags": ["Notes"],
+        "summary": "delete note",
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "description": "ID of the note",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Note retrieved successfully"
+          },
+          "401": {
+            "description": "Unauthorized - Bearer token not provided or invalid"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "firstName": { "type": "string" },
+        "lastName": { "type": "string" },
+        "email": { "type": "string" },
+        "password": { "type": "string" },
+        "confirmPassword": { "type": "string" }
+      }
+    },
+    "login": {
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "password": { "type": "string" }
+      }
+    },
+    "forgetPassword": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "resetPassword": {
+      "type": "object",
+      "properties": {
+        "password": {
+          "type": "string"
+        },
+        "confirmPassword": {
+          "type": "string"
+        }
+      }
+    },
+    "createnote": {
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "isAchive": { "type": "boolean" },
+        "isDeleted": { "type": "boolean" }
+      }
+    }
+  }
+}

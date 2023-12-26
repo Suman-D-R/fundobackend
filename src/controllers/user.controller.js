@@ -1,12 +1,6 @@
 import HttpStatus from 'http-status-codes';
 import * as UserService from '../services/user.service';
 
-/**
- * Controller to get all users available
- * @param  {object} req - request object
- * @param {object} res - response object
- * @param {Function} next
- */
 
 export const userRegistration = async (req, res, next) => {
   try {
@@ -17,16 +11,19 @@ export const userRegistration = async (req, res, next) => {
       message: 'User created successfully'
     });
   } catch (error) {
-    next(error);
+    res.status(HttpStatus.BAD_REQUEST).json({
+      code: HttpStatus.BAD_REQUEST,
+      message: error.message,
+    });
   }
 };
 
 export const loginUser = async (req, res, next) => {
   try {
     const data = await UserService.loginUser(req.body);
-  
-  if(data) { res.status(HttpStatus.CREATED).json({
-      code: HttpStatus.CREATED,
+    console.log(data)
+  if(data) { res.status(HttpStatus.OK).json({
+      code: HttpStatus.Ok,
       data: data,
       message: 'User created successfully'
     });}
@@ -37,80 +34,61 @@ export const loginUser = async (req, res, next) => {
     });
   }
 };
-export const getAllUsers = async (req, res, next) => {
+
+export const forgetpassword = async (req, res, next) => {
   try {
-    const data = await UserService.getAllUsers();
+    const data = await UserService.forgetpassword(req.body);
+  
+  if(data) { res.status(HttpStatus.OK).json({
+      code: HttpStatus.Ok,
+      data: data,
+      message: 'User token created successfully'
+    });}
+  } catch (error) {
+    res.status(HttpStatus.UNAUTHORIZED).json({
+      code: HttpStatus.UNAUTHORIZED,
+      message: error.message
+    });
+  }
+};
+
+export const resetPassword = async (req, res) => {
+  try {
+    // Call the service function
+    
+    const data = await UserService.resetPassword(req.body);
+
+    // Handle the response
     res.status(HttpStatus.OK).json({
       code: HttpStatus.OK,
       data: data,
-      message: 'All users fetched successfully'
+      message: 'User password changed successfully',
     });
   } catch (error) {
-    next(error);
+    res.status(HttpStatus.UNAUTHORIZED).json({
+      code: HttpStatus.UNAUTHORIZED,
+      message: error.message,
+    });
   }
 };
 
-/**
- * Controller to get a single user
- * @param  {object} req - request object
- * @param {object} res - response object
- * @param {Function} next
- */
-export const getUser = async (req, res, next) => {
-  try {
-    const data = await UserService.getUser(req.params.email);
+export const getUserDetails = async (req,res)=>{
+  try{
+    const data = await UserService.getUserDetails(req.body.user_id);
     res.status(HttpStatus.OK).json({
       code: HttpStatus.OK,
       data: data,
-      message: 'User fetched successfully'
+      message: 'successfully',
     });
   } catch (error) {
-    next(error);
-  }
-};
-
-/**
- * Controller to create a new user
- * @param  {object} req - request object
- * @param {object} res - response object
- * @param {Function} next
- */
-
-
-/**
- * Controller to update a user
- * @param  {object} req - request object
- * @param {object} res - response object
- * @param {Function} next
- */
-export const updateUser = async (req, res, next) => {
-  try {
-    const data = await UserService.updateUser(req.params._id, req.body);
-    res.status(HttpStatus.ACCEPTED).json({
-      code: HttpStatus.ACCEPTED,
-      data: data,
-      message: 'User updated successfully'
+    res.status(HttpStatus.UNAUTHORIZED).json({
+      code: HttpStatus.UNAUTHORIZED,
+      message: error.message,
     });
-  } catch (error) {
-    next(error);
   }
-};
+}
 
-/**
- * Controller to delete a user
- * @param  {object} req - request object
- * @param {object} res - response object
- * @param {Function} next
- */
-export const deleteUser = async (req, res, next) => {
-  try {
-    await UserService.deleteUser(req.params._id);
-    res.status(HttpStatus.OK).json({
-      code: HttpStatus.OK,
-      data: [],
-      message: 'User deleted successfully'
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+
+
+
+
