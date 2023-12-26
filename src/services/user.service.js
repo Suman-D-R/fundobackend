@@ -2,7 +2,7 @@ import User from '../models/user.model';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import * as userUtils from '../utils/user.util';
-
+import { sender } from '../utils/sender';
 
 //login
 
@@ -24,6 +24,7 @@ export const loginUser = async (userDetails) => {
     { _id: user._id, email: user.email },
     process.env.SECRET_KEY
   );
+  // sender(userDetails.email);
 
   return token;
 };
@@ -51,9 +52,13 @@ export const forgetpassword = async (body) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY_FORGET, { expiresIn: '1h' });
+    const token = jwt.sign(
+      { userId: user._id },
+      process.env.SECRET_KEY_FORGET,
+      { expiresIn: '1h' }
+    );
 
-    return userUtils.sendEmail(token,email);
+    return userUtils.sendEmail(token, email);
   } catch (error) {
     res.status(500).json({ message: 'Internal server error' });
   }
@@ -62,13 +67,13 @@ export const forgetpassword = async (body) => {
 //reset password
 export const resetPassword = async (userDetails) => {
   try {
-    let {password}=userDetails;
-    let {_id} = userDetails;
+    let { password } = userDetails;
+    let { _id } = userDetails;
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Find the user by ID
-    console.log(userDetails)
+    console.log(userDetails);
     const user = await User.findByIdAndUpdate(
       _id,
       {
@@ -76,7 +81,8 @@ export const resetPassword = async (userDetails) => {
       },
       {
         new: true
-      });
+      }
+    );
 
     if (!user) {
       throw new Error('User not found');
@@ -85,5 +91,15 @@ export const resetPassword = async (userDetails) => {
     return { message: 'Password reset successfully' };
   } catch (error) {
     throw new Error('Internal server error: ' + error.message);
+  }
+};
+
+export const getUserDetails = async (user_id) => {
+  try {
+    const data = await User.findOne({ _id:user_id });
+    console.log(data);
+    return data;
+  } catch {
+    throw new Error('get userdetails error');
   }
 };

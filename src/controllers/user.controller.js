@@ -21,7 +21,7 @@ export const userRegistration = async (req, res, next) => {
 export const loginUser = async (req, res, next) => {
   try {
     const data = await UserService.loginUser(req.body);
-  
+    console.log(data)
   if(data) { res.status(HttpStatus.OK).json({
       code: HttpStatus.Ok,
       data: data,
@@ -71,6 +71,22 @@ export const resetPassword = async (req, res) => {
     });
   }
 };
+
+export const getUserDetails = async (req,res)=>{
+  try{
+    const data = await UserService.getUserDetails(req.body.user_id);
+    res.status(HttpStatus.OK).json({
+      code: HttpStatus.OK,
+      data: data,
+      message: 'successfully',
+    });
+  } catch (error) {
+    res.status(HttpStatus.UNAUTHORIZED).json({
+      code: HttpStatus.UNAUTHORIZED,
+      message: error.message,
+    });
+  }
+}
 
 
 

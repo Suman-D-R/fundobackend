@@ -2,17 +2,30 @@ import Note from '../models/note.model';
 import { client } from '../config/redis';
 
 export const addNote = async (noteData, userId) => {
-  noteData.user_id = userId;
-  const data = await Note.create(noteData);
-  await client.del(userId);
-  return data;
+  try {
+
+    noteData.user_id = userId;
+
+    const data = await Note.create(noteData);
+
+    if (!data) {
+      throw new Error("Error creating note. Note data may be invalid.");
+    }
+
+    // await client.del(userId);
+
+    return data;
+  } catch (error) {
+    throw new Error('Add note error: ' + error.message);
+  }
 };
+
 
 export const getAllNotes = async (userId) => {
   try {
+    // console.log(userId);
     const data = await Note.find({ user_id: userId });
-
-    client.set(userId, JSON.stringify(data));
+    // client.set(userId, JSON.stringify(data));
     return data;
   } catch (error) {
     throw new Error('Error fetching all notes: ' + error.message);
