@@ -99,6 +99,22 @@ export const achiveNote = async (req,res,next)=>{
     }
 }
 
+export const colorNote = async (req,res,next)=>{
+    try{
+        const data = await noteService.colorNote(req.params._id,req.body);
+        res.status(HttpStatus.OK).json({
+            code:HttpStatus.OK,
+            data: data,
+            message:'updated'
+        })
+    }catch(error){
+        res.status(HttpStatus.BAD_REQUEST).json({
+            code: HttpStatus.BAD_REQUEST,
+            message: error.message
+          });
+    }
+}
+
 export const deleteforever = async (req,res,next)=>{
     try{
         const data = await noteService.deleteforever(req.params._id,req.body.user_id);
