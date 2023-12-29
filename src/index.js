@@ -33,7 +33,7 @@ app.use(morgan('combined', { stream: logStream }));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 database();
-redis();
+// redis();
 
 app.use(`/api/${api_version}`, routes());
 app.use(appErrorHandler);

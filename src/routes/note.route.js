@@ -26,7 +26,8 @@ router.put('/:_id/deleteNote', userAuth,noteController.deleteNote);
 //route to achive a note
 router.put('/:_id/achiveNote', userAuth,noteController.achiveNote);
 
-
+//add color
+router.put('/:_id/color', userAuth,noteController.colorNote);
 
 
 
